@@ -6,7 +6,7 @@
 .axis line{
 fill: none;
 stroke: black;
-stroke-width: 7px;
+stroke-width: 5px;
 }
 .axis text{
 font-family: sans-serif;
@@ -16,22 +16,73 @@ font-size: : 11px;
 float: bottom;
 
 }
+
 }
 #miniCloud {
     position: relative;
     left: 200px;
-    top: 150px;
+    top: 120px;
+}
+#Event{
+
+left: 130px;
+top: 512px;
+
+font-size:  22px;
+}
+#pizza{
+
+
+left: 85px;
+top: 140px;
+
+font-size:  22px;
+
+}
+
+
+#EmotionTrend{
+
+
+left: 600px;
+top: 160px;
+
+font-size:  24px;
+
+
+}
+
+.tick line{
+fill: none;
+stroke: blue;
+opacity: 0.2;
+stroke-width: 0.9;
+}
+
+.tag{
+  position: absolute;
+stroke-dasharray: "5,5" d="M5 20 l215 0";
+display: none;
+font-family: sans-serif;
+
+
+}
+
+
+
+.tick path {
+      stroke-dasharray: "5,10" d="M5 20 l215 0" ;
 }
 </style>
 
  <script src="d3.js" charset="utf-8"></script>
 <script type="text/javascript" src="crossfilter.min.js"></script>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="dc.min.js"></script>
 <link rel="stylesheet" type="text/css" href="dc.css" media="screen" /> 
 
-<script src="../d3.layout.cloud.js"></script>
+<script src="d3.layout.cloud.js"></script>
 <script src="melt.js" charset="utf-8"></script>
 
 
@@ -39,26 +90,23 @@ float: bottom;
 
 
 <img  src="header.jpg"  STYLE="position:absolute; TOP:35px;"   z-index: 1; onclick= "javascript: expandChart(0)" >
-
+<p id ="EmotionTrend" class = "tag"> Emotion Trend </p>
 <div class= "dc" id="chart-line"   STYLE="position:absolute; LEFT:350px; TOP: 250px;"></div>
+
+
 <div id="EmotionDim"  STYLE="position:absolute; TOP:200px;"  ></div>
-
+<p id = "pizza" class = "tag">Emotion Pizza</p>
   <svg id="wordCloud" height="600" width="1000"></svg>
-
-  <svg id="miniCloud"  STYLE="position:absolute; ; LEFT:10px; TOP:600px;"   ></svg>
-
-
+<p id = "Event" class = "tag">Event</p>
+  <svg id="miniCloud"  STYLE="position:absolute; ; LEFT:10px; TOP:550px;"   > </svg>
 
 
   
 <script>
 
-var wordSet=[[["explosion",13],["Boston",9], ["marathon",11], ["line",4],["injured",8],],[["congress",5], ["news",6], ["immigration",4],["newtown",2],["bill",4]]];
-
-
+var wordSet=[[["explosion",11],["marathon",11],["Boston",9],  ["line",4],["injured",8],],[["congress",5], ["news",6], ["immigration",4],["newtown",2],["bill",4]]];
 
 var data_1 = [
-
     {"name":"BostonMarathon","surprise":0,"sadness":1,"anger":1,"fear":2,"joy":1,"hope":1,"date":"04/08/2013","fixDate": "04/15/2013"},
     {"name":"BostonMarathon","surprise":0,"sadness":0,"anger":0,"fear":2,"joy":1,"hope":1,"date":"04/09/2013","fixDate": "04/15/2013"},
     {"name":"BostonMarathon","surprise":1,"sadness":3,"anger":1,"fear":3,"joy":1,"hope":1,"date":"04/10/2013","fixDate": "04/15/2013"},
@@ -119,7 +167,7 @@ var scale = d3.time.scale()
      var position = [[scale(new Date("2013-04-15")),410],[scale(new Date("2013-04-08")),300],[400,400]];
             
 var xAxis= d3.svg.axis()
-    .scale(scale)
+    .scale(scale). tickSize(-450, 0, 0)
     .orient("bottom")
    ;
 var hitslineChart  = dc.lineChart("#chart-line"); 
@@ -131,6 +179,8 @@ function showChart(i, callback){
 d3.select("#wordCloud").transition().attr("width","0");
 d3.select("#miniCloud").transition().attr("width","400").attr("height","400");
 callback(emotionData[i]);
+
+ $(".tag").show();
 
 d3.layout.cloud().size([200, 200])
       .words(wordSet[i].map(function(d) {
@@ -152,6 +202,8 @@ d3.select("#wordCloud").transition().ease("bounce").duration(1000).attr("width",
 d3.select(".dc").selectAll("svg").transition().attr("width","0");
 d3.select("#EmotionDim").selectAll("svg").transition().attr("width","0");
 d3.select("#miniCloud").transition().attr("width","0");
+ $(".tag").hide();
+
 
 }
 
