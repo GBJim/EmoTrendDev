@@ -165,7 +165,15 @@ var badIndex = 0;
 var scale = d3.time.scale()
             .domain([new Date("2013-04-01"),new Date("2013-04-30")]).range([0,1000]);
      var position = [[scale(new Date("2013-04-15")),410],[scale(new Date("2013-04-08")),300],[400,400]];
-            
+ 
+var zoom = d3.behavior.zoom().x(scale).on("zoom",zoomed);
+
+
+function zoomed() {
+  svg.call(xAxis);
+//alert("hey");
+}
+
 var xAxis= d3.svg.axis()
     .scale(scale). tickSize(-450, 0, 0)
     .orient("bottom")
@@ -173,7 +181,9 @@ var xAxis= d3.svg.axis()
 var hitslineChart  = dc.lineChart("#chart-line"); 
 
 
-d3.select("#wordCloud").append("g").attr("class","axis").attr("transform","translate(0,580)").call(xAxis);
+svg=d3.select("#wordCloud").append("g").attr("class","axis").attr("transform","translate(0,580)");
+svg.call(xAxis);
+d3.select("#wordCloud").call(zoom);
 
 function showChart(i, callback){
 d3.select("#wordCloud").transition().attr("width","0");
