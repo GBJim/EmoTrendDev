@@ -61,7 +61,7 @@ stroke-width: 0.9;
 
 .tag{
   position: absolute;
-stroke-dasharray: "5,5" d="M5 20 l215 0";
+
 display: none;
 font-family: sans-serif;
 
@@ -164,13 +164,19 @@ var test = ["http://google.com","https://www.python.org/","https://www.ruby-lang
 var badIndex = 0;
 var scale = d3.time.scale()
             .domain([new Date("2013-04-01"),new Date("2013-04-30")]).range([0,1000]);
-     var position = [[scale(new Date("2013-04-15")),410],[scale(new Date("2013-04-08")),300],[400,400]];
+     var position = [[new Date("2013-04-15"),410],[new Date("2013-04-08"),300],[400,400]];
  
 var zoom = d3.behavior.zoom().x(scale).on("zoom",zoomed);
 
 
 function zoomed() {
   svg.call(xAxis);
+  d3.selectAll(".wordCircle").data(position).attr("transform",function(d){
+return "translate("+scale(d[0])+","+(700-d[1])+")";
+
+
+
+  });
 //alert("hey");
 }
 
@@ -179,6 +185,8 @@ var xAxis= d3.svg.axis()
     .orient("bottom")
    ;
 var hitslineChart  = dc.lineChart("#chart-line"); 
+
+d3.select(".wordCircle").attr("translate","")
 
 
 svg=d3.select("#wordCloud").append("g").attr("class","axis").attr("transform","translate(0,580)");
@@ -262,7 +270,7 @@ var maxDate = dateDim.top(1)[0].date;
 hitslineChart
    .width(700).height(400)
    .dimension(dateDim)
-   .ordinalColors(["#FF0000","#6A0888","#FFFF00","#78CC00","#5858FA","#F781BE"])
+   .ordinalColors(["#dc0047","#007b33","#f2993a","#edc500","#729dc9","#fadb4d"])
    .group(angerCount,"anger")
    .stack(fearCount,"fear")
    .stack(hopeCount,"hope")
@@ -288,7 +296,7 @@ EmotionRingChart
     .width(300).height(300)
     .dimension(EmotionDim )
     .group(EmotionTotal)
-    .ordinalColors(["#FF0000","#6A0888","#FFFF00","#78CC00","#5858FA","#F781BE"])
+    .ordinalColors(["#dc0047","#007b33","#f2993a","#edc500","#729dc9","#fadb4d"])
     .innerRadius(80)
     .legend(dc.legend().x(130).y(100).itemHeight(13).gap(5))
     .renderLabel(false)
@@ -306,13 +314,15 @@ d3.select(".dc").selectAll("svg").transition().attr("transform", "translate(300,
 
 
   function draw(words) {
-    xy=position[badIndex]
+    xy=position[words[0].href];
+    
  
 
    var x= d3.select("#wordCloud")
       .append("g")
-      
-        .attr("transform", "translate(" + xy[0]+","+(700-xy[1])+")");
+      .attr("class","wordCircle")
+        .attr("transform", "translate(" + scale(xy[0])+","+(700-xy[1])+")");
+
         x
         .append("circle").attr("stroke","black").attr("stroke-width","2px")
         .on("mouseover",function(){
