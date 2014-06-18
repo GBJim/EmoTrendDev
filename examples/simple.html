@@ -164,20 +164,29 @@ var test = ["http://google.com","https://www.python.org/","https://www.ruby-lang
 var badIndex = 0;
 var scale = d3.time.scale()
             .domain([new Date("2013-04-01"),new Date("2013-04-30")]).range([0,1000]);
-     var position = [[new Date("2013-04-15"),410],[new Date("2013-04-08"),300],[400,400]];
- 
-var zoom = d3.behavior.zoom().x(scale).on("zoom",zoomed);
+var position = [[new Date("2013-04-15"),410],[new Date("2013-04-08"),300],[400,400]];
+var radiusScale = d3.scale.linear().domain([10,10000]).range([10000,100]);
+
+
+
+var zoom = d3.behavior.zoom().x(scale).y(radiusScale).on("zoom",zoomed);
 
 
 function zoomed() {
   svg.call(xAxis);
-  d3.selectAll(".wordCircle").data(position).attr("transform",function(d){
-return "translate("+scale(d[0])+","+(700-d[1])+")";
+zoomer=Math.sqrt(radiusScale(1200))/100;
+  d3.selectAll(".wordCircle").data(position).transition().duration(500).attr("transform",function(d){
+return "translate("+scale(d[0])+","+(700-d[1])+"),scale("+zoomer+","+zoomer+")"   ;
+
+
+
 
 
 
   });
-//alert("hey");
+  d3.selectAll(".wordCircle").attr("transform")
+  //d3.selectAll("circle").attr("r",Math.sqrt(radiusScale(1200)));
+  //d3.selectAll(".wordCircle").selectAll("text").style("font-size",(Math.sqrt(radiusScale(1200))/3+"px"));
 }
 
 var xAxis= d3.svg.axis()
@@ -186,7 +195,7 @@ var xAxis= d3.svg.axis()
    ;
 var hitslineChart  = dc.lineChart("#chart-line"); 
 
-d3.select(".wordCircle").attr("translate","")
+
 
 
 svg=d3.select("#wordCloud").append("g").attr("class","axis").attr("transform","translate(0,580)");
@@ -327,19 +336,19 @@ d3.select(".dc").selectAll("svg").transition().attr("transform", "translate(300,
         .append("circle").attr("stroke","black").attr("stroke-width","2px")
         .on("mouseover",function(){
 
-          d3.select(this).transition().attr("fill","orange").attr("r","140");
+          d3.select(this).transition().attr("fill","orange");
 
         })
         .on("mouseout",function(){
 
-          d3.select(this).transition().attr("fill","white").attr("r","120");
+          d3.select(this).transition().attr("fill","white");
 
         })
          .on("click", function(){showChart(words[0].href,showEmotion);})
       .transition().duration(1000) 
         .attr("fill", "white")   
 
-        .attr("r", function(d){return 120;} )
+        .attr("r", function(d){return Math.sqrt(radiusScale(1200));} )
         .attr("stroke","black")
         ;
 
