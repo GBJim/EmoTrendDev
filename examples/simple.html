@@ -1,79 +1,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<link rel="icon" href="idea.png" type="image/x-icon">
+<title>EmoTrend IDEA Laboratory</title>
 
-<style>
-.axis path,
-.axis line{
-fill: none;
-stroke: black;
-stroke-width: 5px;
-}
-.axis text{
-font-family: sans-serif;
-font-size: : 11px;
-.dc{
-
-float: bottom;
-
-}
-
-}
-#miniCloud {
-    position: relative;
-    left: 200px;
-    top: 120px;
-}
-#Event{
-
-left: 130px;
-top: 512px;
-
-font-size:  22px;
-}
-#pizza{
-
-
-left: 85px;
-top: 140px;
-
-font-size:  22px;
-
-}
-
-
-#EmotionTrend{
-
-
-left: 600px;
-top: 160px;
-
-font-size:  24px;
-
-
-}
-
-.tick line{
-fill: none;
-stroke: blue;
-opacity: 0.2;
-stroke-width: 0.9;
-}
-
-.tag{
-  position: absolute;
-
-display: none;
-font-family: sans-serif;
-
-
-}
-
-
-
-.tick path {
-      stroke-dasharray: "5,10" d="M5 20 l215 0" ;
-}
-</style>
 
  <script src="d3.js" charset="utf-8"></script>
 <script type="text/javascript" src="crossfilter.min.js"></script>
@@ -81,341 +10,40 @@ font-family: sans-serif;
 
 <script type="text/javascript" src="dc.min.js"></script>
 <link rel="stylesheet" type="text/css" href="dc.css" media="screen" /> 
-
 <script src="d3.layout.cloud.js"></script>
 <script src="melt.js" charset="utf-8"></script>
-
+<script src="emoTrend.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="positionStyle.css" media="screen" /> 
 
 <body>
 
 
-<img  src="header.jpg"  STYLE="position:absolute; TOP:35px;"   z-index: 1; onclick= "javascript: expandChart(0)" >
+<img id = "header" src="header.jpg"    z-index: 1; onclick= "javascript: expandChart()" >
 <p id ="EmotionTrend" class = "tag"> Emotion Trend </p>
-<div class= "dc" id="chart-line"   STYLE="position:absolute; LEFT:350px; TOP: 250px;"></div>
+<div  id="chart-line"  ></div>
 
 
-<div id="EmotionDim"  STYLE="position:absolute; TOP:200px;"  ></div>
+<div id="EmotionDim"  ></div>
 <p id = "pizza" class = "tag">Emotion Pizza</p>
   <svg id="wordCloud" height="600" width="1000"></svg>
 <p id = "Event" class = "tag">Event</p>
-  <svg id="miniCloud"  STYLE="position:absolute; ; LEFT:10px; TOP:550px;"   > </svg>
+  <svg id="miniCloud"    > </svg>
 
 
-  
 <script>
 
-var wordSet=[[["explosion",11],["marathon",11],["Boston",9],  ["line",4],["injured",8],],[["congress",5], ["news",6], ["immigration",4],["newtown",2],["bill",4]]];
-
-var data_1 = [
-    {"name":"BostonMarathon","surprise":0,"sadness":1,"anger":1,"fear":2,"joy":1,"hope":1,"date":"04/08/2013","fixDate": "04/15/2013"},
-    {"name":"BostonMarathon","surprise":0,"sadness":0,"anger":0,"fear":2,"joy":1,"hope":1,"date":"04/09/2013","fixDate": "04/15/2013"},
-    {"name":"BostonMarathon","surprise":1,"sadness":3,"anger":1,"fear":3,"joy":1,"hope":1,"date":"04/10/2013","fixDate": "04/15/2013"},
-  {"name":"BostonMarathon","surprise":1,"sadness":2,"anger":2,"fear":1,"joy":1,"hope":1,"date":"04/11/2013","fixDate": "04/15/2013"},
-  {"name":"BostonMarathon","surprise":2,"sadness":2,"anger":0,"fear":3,"joy":3,"hope":2,"date":"04/12/2013","fixDate": "04/15/2013"},
-  {"name":"BostonMarathon","surprise":2,"sadness":1,"anger":1,"fear":3,"joy":3,"hope":2,"date":"04/13/2013","fixDate": "04/15/2013"},
-  {"name":"BostonMarathon","surprise":5,"sadness":8,"anger":0,"fear":4,"joy":11,"hope":4,"date":"04/14/2013","fixDate": "04/15/2013"},
-  {"name":"BostonMarathon","surprise":11,"sadness":7,"anger":3,"fear":12,"joy":30,"hope":13,"date":"04/15/2013","fixDate": "04/15/2013"},
-  {"name":"BostonMarathon","surprise":62,"sadness":114,"anger":32,"fear":136,"joy":42,"hope":112,"date":"04/16/2013","fixDate": "04/15/2013"},
-  {"name":"BostonMarathon","surprise":135,"sadness":20,"anger":20,"fear":108,"joy":27,"hope":59,"date":"04/17/2013","fixDate": "04/15/2013"}];
-var data_2=[
-  {"name":"Death of Thatcher","surprise":108,"sadness":150,"anger":15,"fear":53,"joy":15,"hope":151,"date":"04/08/2013","fixDate":"04/08/2013"},
-   {"name":"Death of Thatcher","surprise":10,"sadness":22,"anger":3,"fear":12,"joy":1,"hope":4,"date":"04/09/2013","fixDate":"04/08/2013"},
-   {"name":"Death of Thatcher","surprise":4,"sadness":5,"anger":3,"fear":4,"joy":1,"hope":3,"date":"04/10/2013","fixDate":"04/08/2013"},
-   {"name":"Death of Thatcher","surprise":1,"sadness":4,"anger":2,"fear":2,"joy":1,"hope":1,"date":"04/11/2013","fixDate":"04/08/2013"},
-   {"name":"Death of Thatcher","surprise":2,"sadness":1,"anger":1,"fear":0,"joy":0,"hope":2,"date":"04/12/2013","fixDate":"04/08/2013"},
-   {"name":"Death of Thatcher","surprise":2,"sadness":3,"anger":0,"fear":2,"joy":0,"hope":0,"date":"04/13/2013","fixDate":"04/08/2013"},
-   {"name":"Death of Thatcher","surprise":0,"sadness":2,"anger":1,"fear":1,"joy":0,"hope":0,"date":"04/14/2013","fixDate":"04/08/2013"},
-   {"name":"Death of Thatcher","surprise":6,"sadness":6,"anger":1,"fear":0,"joy":1,"hope":0,"date":"04/15/2013","fixDate":"04/08/2013"},
-]; 
-var parseDate = d3.time.format("%m/%d/%Y").parse;
-data_1.forEach(function(d) {
-    d.date = parseDate(d.date);
-   
-    d.fixDate = parseDate(d.fixDate);
-});
-
-data_2.forEach(function(d) {
-    d.date = parseDate(d.date);
-    
-    d.fixDate = parseDate(d.fixDate);
-});
-
-data_1=melt(data_1,["name","date","fixDate"])
-data_2=melt(data_2,["name","date","fixDate"])
-var emotionData=[data_1,data_2];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  var fill = d3.scale.category20();
-var test = ["http://google.com","https://www.python.org/","https://www.ruby-lang.org/zh_tw/"];
-
-var badIndex = 0;
-var scale = d3.time.scale()
-            .domain([new Date("2013-04-01"),new Date("2013-04-30")]).range([0,1000]);
-var position = [[new Date("2013-04-15"),410],[new Date("2013-04-08"),300],[400,400]];
-var radiusScale = d3.scale.linear().domain([10,10000]).range([10000,100]);
-
-
-
-var zoom = d3.behavior.zoom().x(scale).y(radiusScale).on("zoom",zoomed);
-
-
-function zoomed() {
-  svg.call(xAxis);
-zoomer=Math.sqrt(radiusScale(1200))/100;
-  d3.selectAll(".wordCircle").data(position).transition().duration(500).attr("transform",function(d){
-return "translate("+scale(d[0])+","+(700-d[1])+"),scale("+zoomer+","+zoomer+")"   ;
-
-
-
-
-
-
-  });
-  d3.selectAll(".wordCircle").attr("transform")
-  //d3.selectAll("circle").attr("r",Math.sqrt(radiusScale(1200)));
-  //d3.selectAll(".wordCircle").selectAll("text").style("font-size",(Math.sqrt(radiusScale(1200))/3+"px"));
-}
-
-var xAxis= d3.svg.axis()
-    .scale(scale). tickSize(-450, 0, 0)
-    .orient("bottom")
-   ;
 var hitslineChart  = dc.lineChart("#chart-line"); 
 
 
+d3.select("#wordCloud").call(zoom);   
 
-
-svg=d3.select("#wordCloud").append("g").attr("class","axis").attr("transform","translate(0,580)");
-svg.call(xAxis);
-d3.select("#wordCloud").call(zoom);
-
-function showChart(i, callback){
-d3.select("#wordCloud").transition().attr("width","0");
-d3.select("#miniCloud").transition().attr("width","400").attr("height","400");
-callback(emotionData[i]);
-
- $(".tag").show();
-
-d3.layout.cloud().size([200, 200])
-      .words(wordSet[i].map(function(d) {
-        return {text: d[0], size: d[1]*3.5 , href: i};
-      }))
-      .padding(5)
-      .rotate(function(d) { return ~~(Math.random() * 5) * 30 - 60; })
-      .font("Impact")
-      .fontSize(function(d) { return d.size; })
-
-      .on("end", drawMini)
-      .start();
-      callback();
-  
-}
-function expandChart(i){
-
-d3.select("#wordCloud").transition().ease("bounce").duration(1000).attr("width","1000").attr("height","600");
-d3.select(".dc").selectAll("svg").transition().attr("width","0");
-d3.select("#EmotionDim").selectAll("svg").transition().attr("width","0");
-d3.select("#miniCloud").transition().attr("width","0");
- $(".tag").hide();
-
-
-}
-
-
-function click(){
-window.open(test[badIndex]);
-
-}  
-
-  function increase(){
-badIndex++;
-
-  } 
-  function layout(wordList,callback,number) {
-   d3.layout.cloud().size([200, 200])
-      .words(wordList.map(function(d) {
-        return {text: d[0], size: d[1]*3.5 , href: number};
-      }))
-      .padding(5)
-      .rotate(function(d) { return ~~(Math.random() * 5) * 30 - 60; })
-      .font("Impact")
-      .fontSize(function(d) { return d.size; })
-
-      .on("end", draw)
-      .start();
-      callback();
-  }
- layout(wordSet[0],increase,0);
-layout(wordSet[1],increase,1);
-
-function showEmotion(data){
-
- var ndx = crossfilter(data);
- var dateDim  = ndx.dimension(function(d) {return d.date;});
-
-var surpriseCount=dateDim.group().reduceSum(function(d) {if (d.variable == "surprise"){return d.value; } else{return 0;}    });
-var sadenessCount=dateDim.group().reduceSum(function(d) {if (d.variable == "sadness"){return d.value; } else{return 0;}    });
-var angerCount=dateDim.group().reduceSum(function(d) {if (d.variable == "anger"){return d.value; } else{return 0;}    });
-var fearCount=dateDim.group().reduceSum(function(d) {if (d.variable == "fear"){return d.value; } else{return 0;}    });
-var joyCount=dateDim.group().reduceSum(function(d) {if (d.variable == "joy"){return d.value; } else{return 0;}    });
-var hopeCount=dateDim.group().reduceSum(function(d) {if (d.variable == "hope"){return d.value; } else{return 0;}    });
-
-var minDate = dateDim.bottom(1)[0].date;
-var maxDate = dateDim.top(1)[0].date;
-
-hitslineChart
-   .width(700).height(550)
-   .dimension(dateDim)
-   .ordinalColors(["#dc0047","#007b33","#f2993a","#edc500","#729dc9","#fadb4d"])
-   .group(angerCount,"anger")
-   .stack(fearCount,"fear")
-   .stack(hopeCount,"hope")
-   .stack(joyCount,"joy")
-   .stack(sadenessCount,"sadness")
-   .stack(surpriseCount,"surprise") 
-   .renderArea(true)
-   .x(d3.time.scale().domain([minDate,maxDate]))
-
-   .legend(dc.legend().x(50).y(10).itemHeight(13).gap(5))
-   .yAxisLabel("Emotion Counts");
-
-
-d3.select("#chart-line").attr("transform", "translate(300,300)");
-
-
-var EmotionDim  = ndx.dimension(function(d) {return d.variable;});
-var EmotionTotal = EmotionDim.group().reduceSum(function(d) {return d.value;});
-var EmotionRingChart   = dc.pieChart("#EmotionDim");
-
-
-EmotionRingChart
-    .width(300).height(300)
-    .dimension(EmotionDim )
-    .group(EmotionTotal)
-    .ordinalColors(["#dc0047","#007b33","#f2993a","#edc500","#729dc9","#fadb4d"])
-    .innerRadius(80)
-    .legend(dc.legend().x(130).y(100).itemHeight(13).gap(5))
-    .renderLabel(false)
-    .renderTitle(false) ; 
-
-
-dc.renderAll();
-d3.select(".dc").selectAll("svg").transition().attr("transform", "translate(300,300)");
-}
-
-
-
-
-
-
-
-  function draw(words) {
-    xy=position[words[0].href];
-    
- 
-
-   var x= d3.select("#wordCloud")
+svg=d3.select("#wordCloud")
       .append("g")
-      .attr("class","wordCircle")
-        .attr("transform", "translate(" + scale(xy[0])+","+(700-xy[1])+")");
+      .attr("class","axis")
+      .attr("transform","translate(0,580)")
+      .call(xAxis);
 
-        x
-        .append("circle").attr("stroke","black").attr("stroke-width","2px")
-        .on("mouseover",function(){
-
-          d3.select(this).transition().attr("fill","orange");
-
-        })
-        .on("mouseout",function(){
-
-          d3.select(this).transition().attr("fill","white");
-
-        })
-         .on("click", function(){showChart(words[0].href,showEmotion);})
-      .transition().duration(1000) 
-        .attr("fill", "white")   
-
-        .attr("r", function(d){return Math.sqrt(radiusScale(1200));} )
-        .attr("stroke","black")
-        ;
-
-        
-      x.selectAll("text")
-        .data(words)
-      .enter().append("text")
-      .on("click", function(d){showChart(d.href,showEmotion);}).
-      transition().duration(2000)
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("font-family", "Impact")
-        .style("fill", function(d, i) { return fill(i); })
- 
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  
-
-
-  }
-
-
-function drawMini(words) {
-    d3.select("#miniCloud")
-
-      .selectAll("g").remove();
-
-
-       var x= d3.select("#miniCloud")
-      .append("g")
-      
-        .attr("transform", "translate(150,150)");
-
-        x.append("circle").attr("stroke","black").attr("stroke-width","2px")
-        
-         .on("click", function(){showChart(words[0].href,showEmotion);})
-      .transition().duration(1000) 
-        .attr("fill", "white")   
-
-        .attr("r", function(d){return 140;} )
-        .attr("stroke","black")
-        ;
-
-    x
-
-      
-      
-      .selectAll("text")
-        .data(words)
-      .enter().append("text")
-      .on("click", function(d){showChart(d.href,showEmotion);}).
-      transition()
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("font-family", "Impact")
-        .style("fill", function(d, i) { return fill(i); })
- 
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  
-
-
-  }
-
+layout(wordSet[0],0);
+layout(wordSet[1],1);
 
 </script>
