@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="idea.png" type="image/x-icon">
+<title>EmoTrend IDEA Laboratory</title>
+
+
+ <script src="d3.js" charset="utf-8" ></script>
+<script type="text/javascript" src="crossfilter.min.js" ></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" ></script>
+
+<script type="text/javascript" src="dc.min.js" ></script>
+<link rel="stylesheet" type="text/css" href="dc.css" media="screen" /> 
+<script src="d3.layout.cloud.js "></script>
+<script src="melt.js" charset="utf-8" ></script>
+<script src="emoTrend.js" charset="utf-8" ></script>
+<link rel="stylesheet" type="text/css" href="positionStyle.css" media="screen" /> 
+</head>
+<body>
+
+
+<img id = "header" src="header.jpg"    z-index: 1; onclick= "javascript: expandChart()" >
+<p id ="EmotionTrend" class = "tag"> Emotion Trend </p>
+<div  id="chart-line"  ></div>
+
+
+<div id="EmotionDim"  ></div>
+<p id = "pizza" class = "tag">Emotion Pizza</p>
+  <svg id="wordCloud" height="600" width="1000"></svg>
+<p id = "Event" class = "tag">Event</p>
+  <svg id="miniCloud"    > </svg>
+
+
+<script>
+
+var hitslineChart  = dc.lineChart("#chart-line"); 
+
+
+d3.select("#wordCloud").call(zoom);   
+
+svg=d3.select("#wordCloud")
+      .append("g")
+      .attr("class","axis")
+      .attr("transform","translate(0,580)")
+      .call(xAxis);
+
+layout(wordSet[0],0,100);//Explosion
+layout(wordSet[1],1,80);//Thather
+
+layout(wordSet[2],2,70);//Iran
+
+layout(wordSet[3],3,75);//Obama
+layout(wordSet[4],4,100);//North Korea
+layout(wordSet[5],5,80);//simoncowell
+layout(wordSet[6],6,70); //Texas
+</script>
