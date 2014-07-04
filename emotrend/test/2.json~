@@ -1,0 +1,10 @@
+[
+  {"surprise":108,"sadness":150,"anger":15,"fear":53,"joy":15,"hope":151,"date":"04/08/2013"},
+   {"surprise":10,"sadness":22,"anger":3,"fear":12,"joy":1,"hope":4,"date":"04/09/2013"},
+   {"surprise":4,"sadness":5,"anger":3,"fear":4,"joy":1,"hope":3,"date":"04/10/2013"},
+   {"surprise":1,"sadness":4,"anger":2,"fear":2,"joy":1,"hope":1,"date":"04/11/2013"},
+   {"surprise":2,"sadness":1,"anger":1,"fear":0,"joy":0,"hope":2,"date":"04/12/2013"},
+   {"surprise":2,"sadness":3,"anger":0,"fear":2,"joy":0,"hope":0,"date":"04/13/2013"},
+   {"surprise":0,"sadness":2,"anger":1,"fear":1,"joy":0,"hope":0,"date":"04/14/2013"},
+   {"surprise":6,"sadness":6,"anger":1,"fear":0,"joy":1,"hope":0,"date":"04/15/2013"},
+]

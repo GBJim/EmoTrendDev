@@ -8,29 +8,35 @@
  <script src="d3.js" charset="utf-8" ></script>
 <script type="text/javascript" src="crossfilter.min.js" ></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" ></script>
-
+<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Montserrat' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="dc.min.js" ></script>
 <link rel="stylesheet" type="text/css" href="dc.css" media="screen" /> 
 <script src="d3.layout.cloud.js "></script>
 <script src="melt.js" charset="utf-8" ></script>
+<script src="data.js "></script>
+
 <script src="emoTrend.js" charset="utf-8" ></script>
 <link rel="stylesheet" type="text/css" href="positionStyle.css" media="screen" /> 
 </head>
 <body>
+ <img id = "header" src="header.jpg"    z-index: 1; onclick= "javascript: expandChart()" >
 
 
-<img id = "header" src="header.jpg"    z-index: 1; onclick= "javascript: expandChart()" >
 <p id ="EmotionTrend" class = "tag"> Emotion Trend </p>
 <div  id="chart-line"  ></div>
 
 
 <div id="EmotionDim"  ></div>
 <p id = "pizza" class = "tag">Emotion Pizza</p>
-  <svg id="wordCloud" height= "600" width="1000"></svg>
+
+
+
+    <svg id="wordCloud" height= "650" width = "0"</svg>
+
 <p id = "Event" class = "tag">Event</p>
   <svg id="miniCloud"    > </svg>
 
-
+<a href="javascript: expandChart()" class="myButton">Go back</a>
 <script>
 
 var hitslineChart  = dc.lineChart("#chart-line"); 
@@ -41,15 +47,15 @@ d3.select("#wordCloud").call(zoom);
 svg=d3.select("#wordCloud")
       .append("g")
       .attr("class","axis")
-      .attr("transform","translate(0,580)")
+      .attr("transform","translate(0,"+(Height-20)+")")
       .call(xAxis);
 
 
-for (i=0; i<=44; i=i+1)
+for (i=0; i<=11; i=i+1)
 {
 layout(wordSet[i],i);
 }
-
+expandChart();
 //Explosion
 
 </script>
