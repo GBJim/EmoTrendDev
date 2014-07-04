@@ -51,7 +51,7 @@ svg=d3.select("#wordCloud")
       .call(xAxis);
 
 
-for (i=0; i<=11; i=i+1)
+for (i=0; i<dataLength; i=i+1)
 {
 layout(wordSet[i],i);
 }

@@ -1,3 +1,5 @@
+var dataLength = 12;
+
 var radius = [
 84.6740400843,
 85.6557791045,

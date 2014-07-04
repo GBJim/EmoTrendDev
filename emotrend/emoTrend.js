@@ -151,7 +151,7 @@ EmotionRingChart
     .group(EmotionTotal)
     .ordinalColors(["#D40000","#FFA854","#FF54FF","#008000","#FFFF54","#5151FF",'#59BDFF','#54FF54'])
     .innerRadius(80)
-    .legend(dc.legend().x(130).y(100).itemHeight(13).gap(5))
+    .legend(dc.legend().x(148).y(95).itemHeight(13).gap(5))
     .renderLabel(false)
     .renderTitle(false) ; 
 
