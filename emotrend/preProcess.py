@@ -8,8 +8,8 @@ def getPosition(dataList):
 	totalRadius = 0 
 	for r,w,d in dataList:
 		totalRadius+=math.log(r,base)
-	height = 650
-	padding = 30
+	height = 700
+	padding = 10
 
 	yWeight = (height -2*padding)/float(2*totalRadius)
 	if 2*totalRadius < (height -2*padding):

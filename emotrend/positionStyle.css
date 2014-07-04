@@ -62,6 +62,7 @@ font-family: sans-serif;
 #header{
 
   position: absolute;
+  top: 0px;
 
 }
 svg text::selection { background: none; }
@@ -84,7 +85,7 @@ left:10px;
 
 #wordCloud{
 position: absolute;
-top: 144px;
+top: 110px;
 
 
 }

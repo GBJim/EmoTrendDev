@@ -1,4 +1,4 @@
-var Height = 650;
+var Height = 700;
 
 
 function drawMini(words) {
@@ -163,7 +163,7 @@ dc.renderAll();
   function layout(wordList,number) {
    d3.layout.cloud().size([200, 200])
       .words(wordList.map(function(d) {
-        return {text: d[0], size: d[1]*3.5 , href: number,radius:radius[number]};
+        return {text: d[0], size: d[1]*3.5 , href: number,radius:radius[number]/1.7};
       }))
      
       .rotate(function(d) { return ~~(Math.random() * 5) * 30 - 60; })
